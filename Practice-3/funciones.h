@@ -14,7 +14,7 @@ public:
     funciones();
     unsigned int n;
     unsigned short int metodo;
-    void codificar(unsigned int &n, string namedata);
+    void codificar(unsigned int &n,unsigned int &metodo, string namedata);
 };
 
 #endif // FUNCIONES_H

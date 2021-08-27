@@ -7,12 +7,14 @@ using namespace std;
 
 int main()
 {
-  string prueba="hola";
+  string prueba="Sudo.txt";
   funciones pruebas;
-  unsigned int semilla;
-  cout<<"Ingrese semilla, MAXIMO 8: "<<endl;
+  unsigned int semilla,metodo;
+  cout<<"Ingrese semilla: "<<endl;
   cin>>semilla;
-  pruebas.codificar(semilla,prueba);
+  cout<<"\nQuiere codificar por metodo 1 || 2?"<<endl;
+  cin>>metodo;
+  pruebas.codificar(semilla,metodo,prueba);
 
     return 0;
 }

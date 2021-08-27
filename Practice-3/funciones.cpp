@@ -8,11 +8,12 @@ funciones::funciones()
 
 }
 
-void funciones::codificar(unsigned int &n, string namedata)
+void funciones::codificar(unsigned int &n,unsigned int &metodo, string namedata)
 {
     string data; //Cadena donde voy a guardar el dato leido
     ifstream infile; // Modo lectura
-    infile.open("C:/Users/USUARIO/Documents/Informatica 2/files lab/Practica 3/Practice-3/BD/Sudo.txt");
+   //C:\Users\diego\OneDrive\Documentos\informatica 2\laboratorio\practica 3\Practica3\Practice-3\BD
+    infile.open("C:/Users/diego/OneDrive/Documentos/informatica 2/laboratorio/practica 3/Practica3/Practice-3/BD/Sudo.txt");
     if (!infile.is_open())
        {
          cout << "Error abriendo el archivo" << endl;
@@ -97,28 +98,77 @@ void funciones::codificar(unsigned int &n, string namedata)
 
     // ---------- Empiezo codificacion -----------------------------------------
 
-    // metodo 1 (Primero cambio los valores del ultimo bloque)
+    if(metodo==1){
+
+    // metodo 1 (Primero cambio los valores del primer bloque)
     for(unsigned int ind=0; ind<n ; ind++){
-        if(bloques[SizeF-1][ind]==48) {
-            bloques[SizeF-1][ind]=49;
+        if(bloques[0][ind]==48) {
+            bloques[0][ind]=49;
             continue; }
-        if(bloques[SizeF-1][ind]==49) {
-            bloques[SizeF-1][ind]=48;}
+        if(bloques[0][ind]==49) {
+            bloques[0][ind]=48;}
     }
+
 
     //Comparo el numero de 0 y 1 de cada grupo y codifico segun condicion
     unsigned short int cont0=0,cont1=0;
-    for (unsigned int i=0 ;i<SizeF; i++) {
-         for (unsigned int j=0 ;j<n;j++) {
-             if (bloques[i][j]==48)cont0+=1;
-             if (bloques[i][j]==49)cont1+=1;
+    for (unsigned int i=1 ;i<SizeF; i++) {
+        cont0=0;
+        cont1=0;
+        for (unsigned int j=0 ;j<n;j++) {
+             if (bloques[i][j]==48)cont0+=1; // Sumo cantidad de 0 de cada grupo
+             if (bloques[i][j]==49)cont1+=1; // cantidad de 1 de cada grupo
          }
-          if (cont0==cont1){
+        // si hay igual cantidad de 0 y 1 invierto bit a bit
+        if (cont0==cont1){
          for (unsigned int j=0; j<n;j++) {
+             if(bloques[i][j]==48){
+                 bloques[i][j]=49;
+                 continue;}
+             if(bloques[i][j]==49){
+                 bloques[i][j]=48;
+                 continue;}
+             } }
+        // Si hay mayor cantidad de 0 invierto cada dos bits entonces empiezo desde el segundo bit de dos en dos
+        if (cont0>cont1){
+             for(unsigned int j=1; j<n; j+=2){
+                 if(bloques[i][j]==48){
+                     bloques[i][j]=49;
+                     continue;}
+                 if(bloques[i][j]==49){
+                     bloques[i][j]=48;
+                     continue;}
+             } }
+        // si hay mayor cantidad de 1 invierto cada tres bits entonces empiezo desde el tercer bit  de 3 en 3
+        if (cont0<cont1){
+             for(unsigned int j=2; j<n; j+=3){
+                 if(bloques[i][j]==48){
+                     bloques[i][j]=49;
+                     continue;}
+                 if(bloques[i][j]==49){
+                     bloques[i][j]=48;
+                     continue;}
+             } }
 
+    }}
+    if(metodo==2){
+        char bloquestemp[SizeF][n];
+        for (unsigned int k=0;k<SizeF;k++){
+            for(unsigned int l=0;l<n;l++){
+                bloquestemp[k][l]=bloques[k][l];
+            }
+        }
+        for (unsigned int i=0;i<SizeF;i++){
+            for (unsigned int j=1; j<n ;j++){
+                bloques[i][j]=bloquestemp[i][j-1];
+            }
+            bloques[i][0]=bloquestemp[i][n-1];
 
-             }
-         }
-         cout<<endl;}
+        }
+    }
+    else {
+        cout<<"Solo existen dos metodos de codificacion: 1 -2 "<<endl;
+        exit(1);
+    }
 
 }
